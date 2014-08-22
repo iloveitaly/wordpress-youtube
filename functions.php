@@ -12,11 +12,27 @@ Plugin URI: https://github.com/iloveitaly/wordpress-youtube
 */
 
 define('ILOVEITALY_YOUTUBE_REGEX', '#([a-zA-Z0-9_-]{11})#i');
+define('ILOVEITALY_YOUTUBE_IFRAME_REGEX', '#<iframe.+?src="http://www.youtube.com/embed/([a-zA-Z0-9_-]{11})["?][^>]+?></iframe>#i');
 
 add_action('init', 'iloveitaly_youtube_shortcodes');
 function iloveitaly_youtube_shortcodes() {
 	add_shortcode('youtube', 'iloveitaly_youtube_embed');
 }
+
+function iloveitaly_iframe_to_image($content) {
+	return preg_replace(ILOVEITALY_YOUTUBE_IFRAME_REGEX, "<a target='_blank' href='".get_permalink().'\'><img src="' . iloveitaly_extract_youtube_image($content) . '" /></a>', $content);
+}
+
+// function iloveitaly_extract_youtube_image($content) {
+// 	preg_match(ILOVEITALY_YOUTUBE_IFRAME_REGEX, $content, $matches);
+
+// 	if(empty($matches[1])) {
+// 		return "";
+// 	}
+
+// 	// TODO need to setup a service for this
+// 	return "domain.com/yt-thumbnail/yt-thumb.php?inpt={$matches[1]}&play&quality=hq";
+// }
 
 function iloveitaly_youtube_embed($attrs) {
 	if(!is_single()) return "";
