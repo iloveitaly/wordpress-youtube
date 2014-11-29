@@ -23,16 +23,15 @@ function iloveitaly_iframe_to_image($content) {
 	return preg_replace(ILOVEITALY_YOUTUBE_IFRAME_REGEX, "<a target='_blank' href='".get_permalink().'\'><img src="' . iloveitaly_extract_youtube_image($content) . '" /></a>', $content);
 }
 
-// function iloveitaly_extract_youtube_image($content) {
-// 	preg_match(ILOVEITALY_YOUTUBE_IFRAME_REGEX, $content, $matches);
+function iloveitaly_extract_youtube_image($content) {
+	preg_match(ILOVEITALY_YOUTUBE_IFRAME_REGEX, $content, $matches);
 
-// 	if(empty($matches[1])) {
-// 		return "";
-// 	}
+	if(empty($matches[1])) {
+		return "";
+	}
 
-// 	// TODO need to setup a service for this
-// 	return "domain.com/yt-thumbnail/yt-thumb.php?inpt={$matches[1]}&play&quality=hq";
-// }
+	return "http://your-generator.com/?quality=hq&play=true&input={$matches[1]}";
+}
 
 function iloveitaly_youtube_embed($attrs) {
 	if(!is_single()) return "";
